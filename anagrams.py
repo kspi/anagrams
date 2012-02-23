@@ -3,6 +3,7 @@
 import itertools
 import marshal
 import os
+import init_dict
 from letterize import letterize
 
 
@@ -11,8 +12,7 @@ longest_word_len = 0
 
 
 def load_dict():
-    if not os.path.exists('dict.dat'):
-        import init_dict
+    if init_dict.needs_updating():
         init_dict.init_dict()
     global word_anas, longest_word_len
     word_anas, longest_word_len = marshal.load(open('dict.dat', 'rb'))

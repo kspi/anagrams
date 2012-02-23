@@ -2,7 +2,9 @@ import re
 import sys
 import marshal
 import os
+import glob
 from letterize import letterize
+
 
 def whichever_exists(*fs):
     for f in fs:
@@ -10,10 +12,21 @@ def whichever_exists(*fs):
             return f
     raise Exception('One of {!r} should exist.'.format(fs))
 
+
 DICTIONARY_FILE = whichever_exists('dict', 'dict.txt', '/usr/share/dict/words')
 
 SHORTWORDS = frozenset(['a', 'an', 'on', 'in', 'at', 'of', 'if', 'we', 'me', 'he', 'be', 'is'])
+
 FORBIDDEN_SYMBOL = re.compile(r'[\WA-Z]')
+
+
+def needs_updating():
+    if not os.path.exists('dict.dat'):
+        return True
+    for other_f in [DICTIONARY_FILE] + glob.glob('*.py'):
+        if os.path.getmtime(other_f) > os.path.getmtime('dict.dat'):
+            return True
+    return False
 
 
 def init_dict(verbose=False):
