@@ -61,7 +61,6 @@ def init_dict(verbose=False):
     log('Words: {words}\nAnagram classes: {anagram_classes}\nLongest word length: {longest_word_len}'.format(**locals()))
 
     log('Pickling ...', newline=False)
-    sys.stdout.flush()
     marshal.dump((word_anas, longest_word_len), open('dict.dat', 'wb'))
     log('done.')
 
